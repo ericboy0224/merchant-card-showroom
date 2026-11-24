@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>momo-card sample</title>
+    <style>
+      /* Hostile page styles. They must not change the cards. */
+      body { font-family: serif; background: #eef; padding: 24px; }
+      div, span, h3, p, img, article, button, s { color: red !important; font-size: 30px !important; border: 3px dashed red !important; background: yellow !important; }
+      momo-card { margin-right: 16px; vertical-align: top; }
+      /* A theme through CSS variables crosses the shadow boundary. */
+      momo-card.themed { --momo-accent: #0a7d3b; }
+    </style>
+  </head>
+  <body>
+    <h1>One script tag, two cards</h1>
+    <p>Build first with <code>npm run build</code>. Then serve this folder, for example with <code>npm run dev</code>.</p>
+
+    <script type="module" src="./dist/momo-card.js"></script>
+    <momo-card card-id="search-result-001"></momo-card>
+    <momo-card card-id="live-sidebar-001" class="themed"></momo-card>
+
+    <script type="module">
+      // A badge that registers from outside the bundle. It adds a chip to every card with a price over 1,000.
+      import { registerBadge } from './dist/momo-card.js'
+      registerBadge('free-shipping', {
+        placement: 'chip',
+        appliesTo: (card) => card.price > 1000,
+        render: () => 'Free shipping',
+      })
+    </script>
+  </body>
+</html>
