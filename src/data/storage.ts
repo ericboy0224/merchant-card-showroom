@@ -48,6 +48,15 @@ export function createLocalStorageAdapter(
     return {}
   }
 
+  function write(overrides: OverrideMap) {
+    try {
+      storage.setItem(storageKey(), JSON.stringify(overrides))
+      logger.log('write', { count: Object.keys(overrides).length })
+    } catch (error) {
+      logger.log('drop', { reason: 'write failed', error: String(error) })
+    }
+  }
+
   return {
     load() {
       let raw: unknown
@@ -55,28 +64,30 @@ export function createLocalStorageAdapter(
         raw = readRaw()
       } catch (error) {
         logger.log('drop', { reason: 'unreadable', error: String(error) })
+        // A SyntaxError means that the stored text is corrupt. Remove it. Any other error is a missing migration: keep the data.
+        if (error instanceof SyntaxError) write({})
         return {}
       }
       if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) {
         logger.log('drop', { reason: 'not an object' })
+        write({})
         return {}
       }
       const out: Record<string, CardOverride> = {}
+      let dropped = false
       for (const [id, value] of Object.entries(raw)) {
         const parsed = cardOverrideSchema.safeParse(value)
         if (parsed.success && parsed.data.cardId === id) out[id] = parsed.data
-        else logger.log('drop', { reason: 'invalid override', cardId: id })
+        else {
+          dropped = true
+          logger.log('drop', { reason: 'invalid override', cardId: id })
+        }
       }
+      // Write the cleaned map back, so a corrupt entry does not stay in storage.
+      if (dropped) write(out)
       logger.log('read', { count: Object.keys(out).length })
       return out
     },
-    save(overrides) {
-      try {
-        storage.setItem(storageKey(), JSON.stringify(overrides))
-        logger.log('write', { count: Object.keys(overrides).length })
-      } catch (error) {
-        logger.log('drop', { reason: 'write failed', error: String(error) })
-      }
-    },
+    save: write,
   }
 }

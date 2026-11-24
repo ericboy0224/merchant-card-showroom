@@ -143,7 +143,7 @@ registerBadge('sponsored', {
 
 - The store holds Overrides in memory and writes them to `localStorage`.
 - The storage key is `momo-showroom:v1:overrides`. The `v1` part is the schema version.
-- On load, Zod validates the stored value. An invalid value is dropped and the logger records it. The Preset then applies.
+- On load, Zod validates the stored value. The data layer drops each invalid entry, keeps the valid ones, and logs it. It then writes the cleaned map back to `localStorage`. The Preset applies to a dropped card.
 - A new schema version needs a migration function. The migration registry sits in `src/data`.
 - The browser `storage` event tells other tabs about each write. Those tabs reload the changed Override.
 - Components in one page, such as two `<momo-card>` elements, sync through the store subscription. The `storage` event does not fire in the tab that wrote the value.
@@ -178,7 +178,7 @@ Every step ends with passing `typecheck`, `oxlint`, and `vitest`. Steps 4 to 6 a
 |------|-------|---------------------|
 | 1 | Project scaffold and the architecture test. | The three commands pass. The architecture test fails on a wrong import. |
 | 2 | `domain`: schemas, Presets, fixtures, `resolveCard`. | The schema accepts valid `CardData` and rejects invalid data. All three Presets pass the schema and have `surface` and `rationale`. `resolveCard` applies an Override. |
-| 3 | `data`: Repository, store, persistence, sync. | The store saves an Override and reads it back. An invalid stored value is dropped and the Preset applies. A `storage` event updates the store. Reset removes the Override. |
+| 3 | `data`: Repository, store, persistence, sync. | The store saves an Override and reads it back. An invalid stored entry is dropped, the cleaned map is written back, and the Preset applies. A `storage` event updates the store. Reset removes the Override. |
 | 4 | `ui` and `plugins`: shared parts, two layouts, badge registry, the sponsored plugin. | Tests render all three variants to a string. A card with missing optional fields still renders. An unknown badge type renders nothing. The sponsored plugin adds the Ad marker. |
 | 5 | `features` and `app`: list view, detail view, editor. | In the browser, an Operator opens the list, opens one card, edits the title and price, reloads, and still sees the edit. Reset restores the Preset values. |
 | 6 | `embed` and `sample.html`. | `sample.html` loads the bundle with one script tag and shows two cards. Page styles do not change the cards. A new badge registers from outside the bundle. |

@@ -70,6 +70,43 @@ describe('storage', () => {
     expect(store.getSnapshot()).toEqual({})
   })
 
+  it('writes the cleaned map back and keeps the valid Overrides', () => {
+    const { backing, events, adapter } = setup()
+    const good = { cardId: 'c2', updatedAt: 1, patch: { title: 'ok' } }
+    backing.setItem(storageKey(), JSON.stringify({ c1: { cardId: 'c1', updatedAt: 'x', patch: {} }, c2: good }))
+    adapter.load()
+    expect(JSON.parse(backing.getItem(storageKey())!)).toEqual({ c2: good })
+    expect(events).toContain('write')
+    events.length = 0
+    adapter.load()
+    expect(events).not.toContain('write')
+  })
+
+  it('removes stored text that is not JSON or not an object', () => {
+    const { backing, adapter } = setup()
+    for (const bad of ['not json', '[1]', 'null']) {
+      backing.setItem(storageKey(), bad)
+      expect(adapter.load()).toEqual({})
+      expect(backing.getItem(storageKey())).toBe('{}')
+    }
+  })
+
+  it('cleans storage when a new store starts', () => {
+    const { backing, adapter } = setup()
+    backing.setItem(storageKey(), '{"c1":{"cardId":"c1","updatedAt":-1,"patch":{}}}')
+    expect(createCardStore(adapter).getSnapshot()).toEqual({})
+    expect(backing.getItem(storageKey())).toBe('{}')
+  })
+
+  it('keeps the old data when a migration step fails', () => {
+    const backing = createMemoryStorage()
+    backing.setItem(storageKey(0), '{}')
+    const failing = { 0: () => { throw new Error('boom') } }
+    expect(createLocalStorageAdapter(backing, undefined, failing).load()).toEqual({})
+    expect(backing.getItem(storageKey())).toBe(null)
+    expect(backing.getItem(storageKey(0))).toBe('{}')
+  })
+
   it('drops an Override whose key differs from its card id', () => {
     const { backing, adapter } = setup()
     backing.setItem(storageKey(), '{"c1":{"cardId":"c9","updatedAt":1,"patch":{}}}')
