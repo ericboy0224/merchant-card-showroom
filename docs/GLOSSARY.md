@@ -15,6 +15,7 @@ If you need a new term, add it here in the same commit that introduces it.
 | Layout | The direction in which a card arranges its content. Allowed values: `vertical`, `horizontal`. | `Layout` | template, orientation |
 | Field | One named piece of data in Card Data. | `CardData` keys | attribute, property |
 | Required Core | The fields that every card must have: `id`, `title`, `price`, `image`. | `requiredCore` | mandatory fields |
+| Card Record | Card Data plus the Card Variant that renders it. The Repository returns Card Records. | `CardRecord` | card entry, listing |
 | Optional Group | A set of optional fields that belong together, such as `pricing` or `rating`. | `pricing`, `rating` | extras |
 
 ## Configuration terms
