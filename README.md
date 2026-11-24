@@ -53,7 +53,7 @@ The pure function `resolveCard(cardData, preset, override)` merges the three. Re
 
 - No real momo API, login, cart, or purchase flow.
 - No pixel-perfect styling and no real brand assets. Images are inline SVG placeholders.
-- No mobile layout work and no server-side rendering.
+- No mobile design and no server-side rendering. The list, the detail view, and the editor only adapt to phone widths of 360 px and up.
 - No end-to-end test. Unit tests cover the domain, the data layer, the registries, and card rendering.
 - The Embed takes `card-id` only. It has no `data` attribute for external JSON.
 - Sync between tabs uses the `storage` event. The latest write for one card wins.

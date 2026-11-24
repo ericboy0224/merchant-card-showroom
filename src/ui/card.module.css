@@ -14,6 +14,7 @@
   border: 1px solid var(--border);
   border-radius: var(--radius);
   font: 14px/1.4 var(--momo-font, system-ui, sans-serif);
+  max-width: 100%;
   overflow: hidden;
   text-align: left;
 }

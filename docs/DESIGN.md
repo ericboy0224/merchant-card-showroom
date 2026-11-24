@@ -17,7 +17,7 @@ This file records the decisions and the tradeoffs behind them.
 
 - No real momo API, login, cart, or purchase flow.
 - No pixel-perfect styling and no real brand assets.
-- No mobile web layout polish.
+- No mobile web layout polish. The Showroom only needs to stay usable at 360 px width and up.
 - No server-side rendering.
 
 ## 3. Stack
@@ -233,7 +233,7 @@ The design claims that a change stays inside one layer. The next step is to prov
 - List performance: measure the Showroom with 1,000 cards. Add windowing after the numbers show a need.
 - Observability: send logger output from the `data` layer to an interface that a host page can replace. Report dropped storage values and render errors through it.
 - End-to-end tests with Playwright for the edit, reload, and reset flow, and for two tabs.
-- Mobile layout and other browsers.
+- Real devices and other browsers. Only Chrome at phone width was checked.
 
 ### 13.4 Product and process
 

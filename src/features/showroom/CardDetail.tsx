@@ -35,7 +35,7 @@ export function CardDetail({ id }: { id: string }) {
   return (
     <>
       <p>
-        <a href="#/">← All cards</a>
+        <a className={styles.back} href="#/">← All cards</a>
       </p>
       {record === undefined ? <p>Loading…</p> : record === null ? <p>No card has the id “{id}”.</p> : <Detail record={record} />}
     </>

@@ -6,7 +6,7 @@ import styles from './showroom.module.css'
 function ListItem({ record }: { record: CardRecord }) {
   const resolved = useResolved(record)
   return (
-    <a className={styles.cardLink} href={`#/card/${record.data.id}`} aria-label={`Open ${record.data.title}`}>
+    <a className={styles.cardLink} data-layout={resolved.layout} href={`#/card/${record.data.id}`} aria-label={`Open ${record.data.title}`}>
       <Card resolved={resolved} />
     </a>
   )
