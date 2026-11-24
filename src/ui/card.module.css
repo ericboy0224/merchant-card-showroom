@@ -1,0 +1,55 @@
+/* Card styles. Colors and sizes come from CSS variables, so a host page can set a theme.
+   The variables cross the Shadow DOM boundary. The fallbacks apply when the host sets none. */
+.card {
+  --accent: var(--momo-accent, #e0245e);
+  --text: var(--momo-text, #222);
+  --muted: var(--momo-muted, #777);
+  --surface: var(--momo-surface, #fff);
+  --border: var(--momo-border, #e5e5e5);
+  --radius: var(--momo-radius, 8px);
+  box-sizing: border-box;
+  display: flex;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font: 14px/1.4 var(--momo-font, system-ui, sans-serif);
+  overflow: hidden;
+  text-align: left;
+}
+.card *, .card *::before, .card *::after { box-sizing: border-box; }
+.vertical { flex-direction: column; width: 220px; }
+.horizontal { flex-direction: row; width: 340px; }
+
+.media { position: relative; flex: none; background: #f3f3f3; }
+.vertical .media { aspect-ratio: 1; }
+.horizontal .media { width: 110px; }
+.media img, .media video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.mediaCount {
+  position: absolute; right: 6px; bottom: 6px; padding: 0 6px;
+  font-size: 11px; color: #fff; background: rgb(0 0 0 / 55%); border-radius: 10px;
+}
+
+.body { display: flex; flex: 1; flex-direction: column; gap: 4px; padding: 8px 10px 10px; min-width: 0; }
+.slogan { margin: 0; color: var(--accent); font-size: 12px; }
+.title {
+  margin: 0; font-size: 14px; font-weight: 500;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px; }
+.priceNow { color: var(--accent); font-size: 18px; font-weight: 700; }
+.priceOriginal { color: var(--muted); font-size: 12px; text-decoration: line-through; }
+.priceNote { flex-basis: 100%; color: var(--muted); font-size: 11px; }
+.rating, .sales { margin: 0; color: var(--muted); font-size: 12px; }
+
+.overlay { position: absolute; top: 6px; left: 6px; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.overlay > span { padding: 0 6px; color: #fff; background: var(--accent); border-radius: 3px; font-size: 11px; }
+.ribbon { position: absolute; top: 0; left: 0; }
+.ribbon > span { display: block; padding: 2px 8px; color: #fff; background: var(--accent); border-radius: 0 0 6px 0; font-size: 11px; }
+.chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.chips > span { padding: 0 6px; color: var(--accent); border: 1px solid var(--accent); border-radius: 3px; font-size: 11px; }
+
+.action {
+  align-self: flex-start; margin-top: auto; padding: 4px 14px; color: #fff; background: var(--accent);
+  border: 0; border-radius: 4px; font: inherit; cursor: pointer;
+}
