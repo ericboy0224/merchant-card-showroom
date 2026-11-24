@@ -99,6 +99,7 @@ To reset a card, the app deletes its Override.
 
 `CardData` has a required core: `id`, `title`, `price`, and `image`.
 Optional groups hold the rest: `pricing`, `rating`, `sales`, `slogan`, `badges`, `action`, and `media`.
+The optional `flags` field is a list of names. A plugin reads it. It is not an Optional Group, so a Preset does not list it.
 The Zod schema in `src/domain` is the only definition. Every other type comes from `z.infer`.
 
 ### Editable fields
@@ -109,7 +110,7 @@ The editor changes `title`, `price`, `pricing.original`, `rating`, and `badges`.
 
 The three variants share most fields. The vertical variants and the horizontal variant differ in structure.
 
-- Shared parts live in `src/ui/parts`: `CardMedia`, `CardTitle`, `CardPrice`, `CardRating`, and `BadgeList`.
+- Shared parts live in `src/ui/parts`: `CardMedia`, `CardTitle`, `CardSlogan`, `CardPrice`, `CardRating`, `CardSales`, `CardAction`, and `BadgeList`.
 - Two templates compose the parts: `VerticalLayout` and `HorizontalLayout`.
 - A layout registry maps the `layout` value to a template.
 
@@ -134,7 +135,7 @@ registerBadge('sponsored', {
 ```
 
 - The registry maps a badge type to its renderer. An unknown type renders nothing.
-- `sponsored` is the first example. A store marker or a fast-delivery marker can follow.
+- The built-in badge types are `event`, `ribbon`, `coupon`, `fast-delivery`, and `sponsored`. Only `sponsored` follows a Flag. It is the first example. A store marker can follow.
 - `sample.html` registers one badge from outside the bundle to show the extension point.
 - Plugin styles use CSS variables, so a card theme still applies inside the Shadow DOM.
 
@@ -159,11 +160,12 @@ registerBadge('sponsored', {
 - The element renders into a Shadow DOM, so page styles do not leak in.
 - Vite imports component styles with `?inline`. The element copies them into the shadow root.
 - Version 1 supports the `card-id` attribute only. A `data` attribute for external JSON is a future option.
+- The bundle exports `registerBadge`, `registerLayout`, and `cardStore`. A host page uses them to add a badge or a layout, or to read the store.
 - Vite library mode builds the bundle. The bundle includes React.
 
 ## 10. Testing and observability
 
-- Vitest covers the schemas, the store, the migration, and the registries.
+- Vitest covers the schemas, `resolveCard`, the store, the migration, the registries, card rendering, the editor form, and the layer rules.
 - A small logger in `src/data` records storage reads, writes, sync messages, and dropped values.
 - No end-to-end test in the first version.
 
@@ -219,15 +221,15 @@ The Embed is a distributed product. A host page cannot read our code, so the int
 
 The design claims that a change stays inside one layer. The next step is to prove it.
 
-- Write a walkthrough in the README for a fourth Card Variant. List the files that change: one Preset, one fixture, and one glossary line. List the files that must not change.
+- Write a walkthrough in the README for a fourth Card Variant. List the files that change: one Preset file, the variant and surface lists in `src/domain/card.ts`, `src/domain/catalog/index.ts`, one fixture, and one glossary line. List the files that must not change.
 - Back the walkthrough with a test. The test registers a new variant and a new badge, renders them, and touches no core file.
 - Add contract tests. A Preset without a `rationale` fails the schema. A plugin with a wrong shape is rejected at registration.
 - Write a migration for each schema change. Keep one fixture of stored data per version, and load it in a test.
 
 ### 13.3 Set a quality floor
 
-- Accessibility: semantic markup, a visible focus state, keyboard use of the action, and a text alternative for each image. Run axe on the rendered cards in tests, and do one manual keyboard pass.
-- Image loading: lazy loading below the fold, fixed width and height to prevent layout shift, and a placeholder.
+- Accessibility: each image has a text alternative and each card is an `article`. Add a visible focus state and keyboard use of the action. Run axe on the rendered cards in tests, and do one manual keyboard pass.
+- Image loading: images already use `loading="lazy"` and a fixed media box. Add `srcset` and `sizes` for real images, and a placeholder that matches each image.
 - List performance: measure the Showroom with 1,000 cards. Add windowing after the numbers show a need.
 - Observability: send logger output from the `data` layer to an interface that a host page can replace. Report dropped storage values and render errors through it.
 - End-to-end tests with Playwright for the edit, reload, and reset flow, and for two tabs.

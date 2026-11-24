@@ -14,7 +14,7 @@ If you need a new term, add it here in the same commit that introduces it.
 | Surface | The place in the product where a card appears. | `Surface` | page, context, scene |
 | Layout | The direction in which a card arranges its content. Allowed values: `vertical`, `horizontal`. | `Layout` | template, orientation |
 | Field | One named piece of data in Card Data. | `CardData` keys | attribute, property |
-| Required Core | The fields that every card must have: `id`, `title`, `price`, `image`. | `requiredCore` | mandatory fields |
+| Required Core | The fields that every card must have: `id`, `title`, `price`, `image`. | `cardDataSchema` | mandatory fields |
 | Card Record | Card Data plus the Card Variant that renders it. The Repository returns Card Records. | `CardRecord` | card entry, listing |
 | Optional Group | A set of optional fields that belong together, such as `pricing` or `rating`. | `pricing`, `rating` | extras |
 
@@ -34,8 +34,8 @@ If you need a new term, add it here in the same commit that introduces it.
 |------|------------|-----------------|-------|
 | Badge | A small marker on a card, such as an event tag or a coupon label. | `Badge` | tag, label, sticker |
 | Badge Placement | Where a badge appears: `overlay` (on the image), `ribbon` (image corner), `chip` (below the title). | `BadgePlacement` | position, slot |
-| Flag | A boolean in Card Data that a plugin can read, for example `sponsored`. | `flags` | switch, toggle |
-| Plugin | A module that adds a badge type without a change to the core. | `Plugin` | extension, add-on |
+| Flag | A name in the `flags` list of Card Data. A plugin can read it, for example `sponsored`. | `flags` | switch, toggle |
+| Plugin | A module that adds a badge type without a change to the core. | `BadgeDefinition` | extension, add-on |
 | Registry | The lookup table that maps a badge type to its renderer. | `badgeRegistry` | plugin map |
 
 ## Delivery terms

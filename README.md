@@ -65,4 +65,4 @@ Three things come first. [Design document section 13](docs/DESIGN.md) has the de
 
 - Make the Embed a contract: a version, events for the host page, a documented public surface, and a `data` attribute.
 - Show the cost of change: a walkthrough and a test that add a fourth Card Variant without a change to the core.
-- Set a quality floor: accessibility tests, image loading, list performance, and end-to-end tests.
+- Set a quality floor: accessibility tests, responsive images, list performance, and end-to-end tests.
