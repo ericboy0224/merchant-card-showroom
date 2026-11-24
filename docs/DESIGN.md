@@ -202,9 +202,48 @@ Time can run short. In that case, cut the `home-feed` variant first, then cross-
 
 ## 13. Next steps after the take-home
 
-- Add a `data` attribute to the embed for external JSON.
+The list is in priority order. A maintainer starts with 13.1 to 13.3. A card that lives on pages that the team does not own gains the most from them.
+
+### 13.1 Make the Embed a contract
+
+The Embed is a distributed product. A host page cannot read our code, so the interface must stay stable and observable.
+
+- Add a version. The element exposes a `version` property, and the bundle name carries the major version. A major change ships as a new file name, so old host pages keep working.
+- Emit events: `momo-card:ready` after the first render, `momo-card:action` after a click on the action, and `momo-card:error` after a failed render or invalid data. The events bubble out of the shadow root. A host page uses them for analytics and error reporting.
+- Document the public surface: the attributes, the events, the CSS variables for themes, and the badge registration function. Everything else is private and can change.
+- Add a `data` attribute for external JSON. The Card Data schema validates it.
+- Test the bundle on a page with a strict Content Security Policy. Remove any inline script or style that the policy blocks.
+- Replace React with Preact in the Embed build, and set a bundle size budget in CI.
+
+### 13.2 Show the cost of change
+
+The design claims that a change stays inside one layer. The next step is to prove it.
+
+- Write a walkthrough in the README for a fourth Card Variant. List the files that change: one Preset, one fixture, and one glossary line. List the files that must not change.
+- Back the walkthrough with a test. The test registers a new variant and a new badge, renders them, and touches no core file.
+- Add contract tests. A Preset without a `rationale` fails the schema. A plugin with a wrong shape is rejected at registration.
+- Write a migration for each schema change. Keep one fixture of stored data per version, and load it in a test.
+
+### 13.3 Set a quality floor
+
+- Accessibility: semantic markup, a visible focus state, keyboard use of the action, and a text alternative for each image. Run axe on the rendered cards in tests, and do one manual keyboard pass.
+- Image loading: lazy loading below the fold, fixed width and height to prevent layout shift, and a placeholder.
+- List performance: measure the Showroom with 1,000 cards. Add windowing after the numbers show a need.
+- Observability: send logger output from the `data` layer to an interface that a host page can replace. Report dropped storage values and render errors through it.
+- End-to-end tests with Playwright for the edit, reload, and reset flow, and for two tabs.
+- Mobile layout and other browsers.
+
+### 13.4 Product and process
+
+These topics belong mostly to backend and product teams. The frontend must still be ready for them.
+
+- Field ownership: mark each field in the schema as system-owned or Operator-owned. System-owned fields (price, original price, rating, and sales) are read-only for an Operator. The editor changes the price today only to demonstrate the form. The server must enforce ownership, because a hidden field does not stop a request.
+- Review and publish: give an Override a status (draft, in review, approved, published), a version, an author, and a reviewer. Shoppers see only published versions. A rollback publishes the previous version.
+- Campaign timing: add scheduled publish and batch edits for sale periods.
+- Measurement: use the Embed events for click and conversion metrics, so that variants and slogans can run in an A/B test.
+
+### 13.5 Other follow-ups
+
 - Replace the mock Repository with a real API client.
-- Add end-to-end tests with Playwright.
-- Replace React with Preact in the embed build to cut the size.
 - Use `BroadcastChannel` for sync after the store moves from `localStorage` to IndexedDB.
 - Replace latest write wins with a version number comparison after several Operators start to edit at once.

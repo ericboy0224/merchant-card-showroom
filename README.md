@@ -59,9 +59,8 @@ The pure function `resolveCard(cardData, preset, override)` merges the three. Re
 
 ## Next steps
 
-- Add a `data` attribute to the Embed for external JSON.
-- Replace the mock Repository with a real API client.
-- Add end-to-end tests with Playwright.
-- Replace React with Preact in the Embed build to cut the size.
-- Use `BroadcastChannel` for sync after the Store moves to IndexedDB.
-- Replace latest write wins with a version number comparison.
+Three things come first. [Design document section 13](docs/DESIGN.md) has the detail and the other follow-ups.
+
+- Make the Embed a contract: a version, events for the host page, a documented public surface, and a `data` attribute.
+- Show the cost of change: a walkthrough and a test that add a fourth Card Variant without a change to the core.
+- Set a quality floor: accessibility tests, image loading, list performance, and end-to-end tests.
