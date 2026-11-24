@@ -162,6 +162,7 @@ registerBadge('sponsored', {
 - Version 1 supports the `card-id` attribute only. A `data` attribute for external JSON is a future option.
 - The bundle exports `registerBadge`, `registerLayout`, and `cardStore`. A host page uses them to add a badge or a layout, or to read the store.
 - Vite library mode builds the bundle. The bundle includes React.
+- The measured size of `dist/momo-card.js` is 432 kB raw and 110.5 kB gzip. The build writes no CSS file, because the element carries its styles inside the bundle.
 
 ## 10. Testing and observability
 
@@ -193,7 +194,7 @@ Time can run short. In that case, cut the `home-feed` variant first, then cross-
 | Seven layers for a small app | A change stays inside one layer. A reviewer sees the structure. | More folders and an architecture test to maintain. |
 | Preset and Override split | Git history explains each card. An Operator can reset any card. | A merge step for every read. |
 | Shared parts and separate layout templates | One field definition and one editor. No layout branches. | One more registry. The part interfaces need care. |
-| React inside the embed | One rendering path for the app and the embed. | The bundle is about 45 KB gzip larger than a plain Custom Element. |
+| React inside the embed | One rendering path for the app and the embed. | React and `react-dom` alone are 76.6 KB gzip. The whole bundle is 110.5 KB gzip. |
 | CSS Modules and CSS variables | Local class names. Variables cross the Shadow DOM boundary. | The embed build must copy styles into the shadow root. |
 | Own store with `useSyncExternalStore` | No dependency. The embed shares the store. | We write the subscribe logic and no devtools exist. |
 | `storage` event for tab sync | Native and almost no code. | It works only for `localStorage`. Another medium needs `BroadcastChannel`. |

@@ -19,6 +19,8 @@ To try the Embed:
 1. Run `npm run build`. It writes the app and `dist/momo-card.js`.
 2. Run `npm run dev`, then open `/sample.html` on the dev server address.
 
+The bundle `dist/momo-card.js` is 432 kB raw and 110.5 kB gzip, and it includes React.
+
 `sample.html` loads the bundle with one script tag. It shows two cards on a page with hostile styles. It also registers a new badge from outside the bundle.
 
 ## Architecture
