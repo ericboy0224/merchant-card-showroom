@@ -1,0 +1,6 @@
+#!/bin/sh
+# Block a commit that fails typecheck, lint, or tests.
+npm run verify --silent || {
+  echo "pre-commit: npm run verify failed. Fix the errors and commit again."
+  exit 1
+}

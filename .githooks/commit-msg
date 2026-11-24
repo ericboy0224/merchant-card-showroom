@@ -1,0 +1,8 @@
+#!/bin/sh
+# Require Conventional Commits: type(scope): subject, 72 characters or fewer.
+subject=$(head -n 1 "$1")
+case "$subject" in Merge*|Revert*) exit 0 ;; esac
+echo "$subject" | grep -Eq '^(feat|fix|docs|chore|refactor|test|ci|build|perf|style)(\([a-z0-9/._-]+\))?!?: .{1,72}$' || {
+  echo "commit-msg: use 'type(scope): subject' with a subject of 72 characters or fewer."
+  exit 1
+}
