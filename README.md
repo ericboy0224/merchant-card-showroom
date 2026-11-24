@@ -1,8 +1,8 @@
 # Merchant Card Showroom
 
-A small app that shows three momo-style product cards from one shared model. An Operator can edit a card in the browser. Any HTML page can embed a card with one script tag.
+**Demo video:** [Watch the 39-second demo](https://drive.google.com/file/d/1oLlRtZldU2DXSRchRthaHNEvQjGC4P51/view?usp=drivesdk). The subtitles are in Traditional Chinese. It shows the list, an edit that survives a reload, the form check, a reset, the Embed on a sample page, and the phone layout.
 
-Watch the [demo video](https://drive.google.com/file/d/1Nei7cqElZrc9LUGrX0ckT36800objsQD/view?usp=drivesdk). It runs 38 seconds. It shows the list, an edit that survives a reload, a reset, and the Embed on a sample page.
+A small app that shows three momo-style product cards from one shared model. An Operator can edit a card in the browser. Any HTML page can embed a card with one script tag.
 
 Read [docs/GLOSSARY.md](docs/GLOSSARY.md) for the terms. Read [docs/DESIGN.md](docs/DESIGN.md) for the decisions. Read [docs/PRD-card-analysis.md](docs/PRD-card-analysis.md) for the research.
 
